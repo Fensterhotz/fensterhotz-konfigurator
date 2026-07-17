@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ProjectType {
+  NEUBAU
+  SANIERUNG
+}
+
+enum Installation {
+  MIT_MONTAGE
+  OHNE_MONTAGE
+}
+
+enum ProductType {
+  FENSTER
+  BALKONTUER
+  HEBESCHIEBETUER
+}
+
+enum ProfileSystem {
+  KUNSTSTOFF
+  ALUMINIUM
+}
+
+enum Glazing {
+  ZWEIFACH
+  DREIFACH
+}
+
+enum GlassType {
+  KLAR
+  SICHERHEIT
+  MILCHGLAS
+  ANDERE
+}
+
+enum OpeningType {
+  FEST
+  DREHKIPP_LINKS
+  DREHKIPP_RECHTS
+  NUR_KIPP
+  GLEITEND_LINKS
+  GLEITEND_RECHTS
+}
+
+enum ColorMode {
+  WEISS_BEIDSEITIG
+  WEISS_INNEN_FARBE_AUSSEN
+  FARBE_BEIDSEITIG
+}
+
+enum ColorChoice {
+  GOLDEN_OAK
+  NUSSBAUM
+  ANTHRAZITGRAU
+  SCHWARZ_MATT
+  QUARZGRAU
+  MAHAGONI
+  EICHE_DUNKEL
+  ANDERE
+}
+
+enum ShutterType {
+  ROLLLADEN
+  JALOUSIE
+}
+
+enum ShutterControl {
+  MANUELL
+  ELEKTRISCH
+}
+
+model Inquiry {
+  id           String       @id @default(cuid())
+  createdAt    DateTime     @default(now())
+  projectType  ProjectType
+  installation Installation
+
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  address   String?
+  notes     String?
+
+  items ConfigItem[]
+}
+
+model ConfigItem {
+  id        String  @id @default(cuid())
+  inquiryId String
+  inquiry   Inquiry @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+
+  productType   ProductType
+  profileSystem ProfileSystem
+
+  widthMm  Int
+  heightMm Int
+
+  hasDivision  Boolean @default(false)
+  divisionNote String?
+
+  glazing   Glazing
+  glassType GlassType
+  glassNote String?
+
+  openingType OpeningType
+
+  colorMode   ColorMode
+  colorChoice ColorChoice?
+  colorNote   String?
+
+  hasShutter     Boolean         @default(false)
+  shutterType    ShutterType?
+  shutterControl ShutterControl?
+
+  itemNote String?
+
+  @@index([inquiryId])
+}

@@ -28,6 +28,7 @@ interface WizardState {
   editingItemId: string | null;
   contact: Partial<ContactInfo>;
   contactErrors: Partial<Record<keyof ContactInfo, string>>;
+  honeypot: string;
   submitting: boolean;
   submitError: string | null;
 }
@@ -44,6 +45,7 @@ type Action =
   | { type: "DELETE_ITEM"; id: string }
   | { type: "GOTO_CONTACT" }
   | { type: "UPDATE_CONTACT"; patch: Partial<ContactInfo> }
+  | { type: "SET_HONEYPOT"; value: string }
   | { type: "GOTO_SUMMARY" }
   | { type: "BACK_TO_OVERVIEW" }
   | { type: "BACK_TO_CONTACT" }
@@ -60,6 +62,7 @@ function initialState(): WizardState {
     editingItemId: null,
     contact: { firstName: "", lastName: "", email: "", phone: "", address: "", notes: "" },
     contactErrors: {},
+    honeypot: "",
     submitting: false,
     submitError: null,
   };
@@ -118,6 +121,8 @@ function reducer(state: WizardState, action: Action): WizardState {
       return { ...state, phase: "contact" };
     case "UPDATE_CONTACT":
       return { ...state, contact: { ...state.contact, ...action.patch } };
+    case "SET_HONEYPOT":
+      return { ...state, honeypot: action.value };
     case "GOTO_SUMMARY": {
       const result = contactSchema.safeParse(state.contact);
       if (!result.success) {
@@ -152,6 +157,7 @@ export function Wizard() {
       installation: state.installation,
       contact: state.contact,
       items: state.items,
+      website: state.honeypot,
     };
     const parsed = inquirySchema.safeParse(payload);
     if (!parsed.success) {
@@ -221,6 +227,8 @@ export function Wizard() {
         contact={state.contact}
         errors={state.contactErrors}
         update={(patch) => dispatch({ type: "UPDATE_CONTACT", patch })}
+        honeypot={state.honeypot}
+        onHoneypotChange={(value) => dispatch({ type: "SET_HONEYPOT", value })}
         onNext={() => dispatch({ type: "GOTO_SUMMARY" })}
         onBack={() => dispatch({ type: "BACK_TO_OVERVIEW" })}
       />

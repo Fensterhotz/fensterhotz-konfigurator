@@ -83,6 +83,8 @@ export const inquirySchema = z.object({
   installation: installationSchema,
   contact: contactSchema,
   items: z.array(configItemSchema).min(1, "Bitte mindestens ein Element konfigurieren"),
+  // Honeypot: reales Nutzer lassen dieses Feld leer, Bots füllen es oft blind aus.
+  website: z.string().optional(),
 });
 
 export type InquiryPayload = z.infer<typeof inquirySchema>;

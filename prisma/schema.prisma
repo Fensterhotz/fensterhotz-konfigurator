@@ -93,7 +93,11 @@ model Inquiry {
   address   String?
   notes     String?
 
+  ipAddress String?
+
   items ConfigItem[]
+
+  @@index([ipAddress, createdAt])
 }
 
 model ConfigItem {

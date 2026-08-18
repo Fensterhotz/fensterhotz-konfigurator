@@ -7,12 +7,16 @@ export function ContactStep({
   contact,
   errors,
   update,
+  honeypot,
+  onHoneypotChange,
   onNext,
   onBack,
 }: {
   contact: Partial<ContactInfo>;
   errors: Partial<Record<keyof ContactInfo, string>>;
   update: (patch: Partial<ContactInfo>) => void;
+  honeypot: string;
+  onHoneypotChange: (value: string) => void;
   onNext: () => void;
   onBack: () => void;
 }) {
@@ -24,6 +28,23 @@ export function ContactStep({
       footer={<PrimaryButton onClick={onNext}>Weiter zur Übersicht</PrimaryButton>}
     >
       <div className="flex flex-col gap-4">
+        {/* Honeypot: für Menschen unsichtbar, Bots füllen es oft blind aus */}
+        <div
+          aria-hidden="true"
+          style={{ position: "absolute", left: "-9999px", top: "-9999px" }}
+        >
+          <label>
+            Bitte leer lassen
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => onHoneypotChange(e.target.value)}
+            />
+          </label>
+        </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <TextField
             label="Vorname"

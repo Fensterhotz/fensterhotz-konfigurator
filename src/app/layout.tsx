@@ -11,7 +11,7 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   title: "Fenster-Konfigurator | Hotz Fenster & Türen",
   description:
-    "Konfigurieren Sie Ihre Fenster, Balkontüren oder Hebeschiebetüren in wenigen Schritten und fordern Sie ein unverbindliches Angebot an.",
+    "Konfigurieren Sie Ihre Fenster oder Balkontüren in wenigen Schritten und fordern Sie ein unverbindliches Angebot an.",
 };
 
 export default function RootLayout({

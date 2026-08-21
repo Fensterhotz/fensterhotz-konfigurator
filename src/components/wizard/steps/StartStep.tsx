@@ -20,7 +20,7 @@ export function StartStep({
   return (
     <StepLayout
       title="Fenster-Konfigurator"
-      subtitle="Konfigurieren Sie in wenigen Schritten Ihre Fenster, Balkontüren oder Hebeschiebetüren für ein unverbindliches Erstangebot."
+      subtitle="Konfigurieren Sie in wenigen Schritten Ihre Fenster oder Balkontüren für ein unverbindliches Erstangebot."
       progress={0}
       footer={
         <PrimaryButton disabled={!projectType || !installation} onClick={onNext}>

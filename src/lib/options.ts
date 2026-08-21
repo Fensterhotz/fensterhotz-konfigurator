@@ -31,7 +31,6 @@ export const installationOptions: Option<Installation>[] = [
 export const productTypeOptions: Option<ProductType>[] = [
   { value: "FENSTER", label: "Fenster" },
   { value: "BALKONTUER", label: "Balkontür" },
-  { value: "HEBESCHIEBETUER", label: "Hebeschiebetür" },
 ];
 
 export const profileSystemOptions: Option<ProfileSystem>[] = [
